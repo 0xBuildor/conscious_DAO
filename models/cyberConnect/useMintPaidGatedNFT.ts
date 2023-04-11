@@ -6,7 +6,7 @@ import CashierABI from "../../abi/Cashier.json";
 import {
   CASHIER_CONTRACT_ADDRESS,
   DEFAULT_CHAIN,
-  LIT_PKP_PKEY,
+  LIT_PKP_PUBKEY,
 } from "../../consts";
 import { EligibilityCondition } from "../../types";
 import useLitSign from "../lit/useSign";
@@ -227,7 +227,7 @@ export const useMintPaidGatedNFT = ({
           permissionMwPreDataDigest:
             TypedDataUtils.encodeDigest(permissionMwPreData),
           mintRequestDigest: TypedDataUtils.encodeDigest(mintRequestData),
-          publicKey: LIT_PKP_PKEY,
+          publicKey: LIT_PKP_PUBKEY,
         },
       });
 

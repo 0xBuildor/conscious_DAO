@@ -1,3 +1,4 @@
+import followsTwitterDiscord from "@/models/conditions/followsTwitterDiscord";
 import hasCCProfile from "@/models/conditions/hasCCProfile";
 import {
   Box,
@@ -65,7 +66,7 @@ export default function Hero() {
           </Text>
           {/* just an example */}
           <Eligibility
-            conditions={[hasCCProfile]}
+            conditions={[hasCCProfile, followsTwitterDiscord]}
             prover={"0x5b3999bc2e8c46f75BF629DA951559D83E34FBdD"}
           />
           <MintButton />

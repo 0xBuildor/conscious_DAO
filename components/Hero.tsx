@@ -1,5 +1,8 @@
+import { TURTLE_NFT_ESSENCE_ID, TURTLE_NFT_PROFILE_ID } from "@/consts";
 import followsTwitterDiscord from "@/models/conditions/followsTwitterDiscord";
 import hasCCProfile from "@/models/conditions/hasCCProfile";
+import { ILoginContext, loginContext } from "@/store/Login";
+import PreMintProvider from "@/store/PreMint";
 import {
   Box,
   Button,
@@ -10,10 +13,21 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useContext, useMemo } from "react";
+import { Address, useAccount } from "wagmi";
 import Eligibility from "./Eligibility";
 import MintButton from "./MintButton";
 
 export default function Hero() {
+  const { address: connectedWalletAddress } = useAccount();
+  const { isLoggingIn, isLoggedIn, mbLogin } = useContext(
+    loginContext
+  ) as ILoginContext;
+  const mintEligibilityConditions = useMemo(
+    () => [hasCCProfile, followsTwitterDiscord],
+    []
+  );
+
   return (
     <Container maxW={"7xl"}>
       <Stack
@@ -64,12 +78,24 @@ export default function Hero() {
             - Follow ConsciouDAO on Twitter
             <br />- Follow ConsciousDAO on Link3
           </Text>
-          {/* just an example */}
-          <Eligibility
-            conditions={[hasCCProfile, followsTwitterDiscord]}
-            prover={"0x5b3999bc2e8c46f75BF629DA951559D83E34FBdD"}
-          />
-          <MintButton />
+          <PreMintProvider
+            recipient={connectedWalletAddress as Address}
+            eligibilityConditions={mintEligibilityConditions}
+          >
+            <Eligibility />
+            {isLoggedIn ? (
+              <MintButton
+                recipient={connectedWalletAddress as Address}
+                profileId={TURTLE_NFT_PROFILE_ID}
+                essenceId={TURTLE_NFT_ESSENCE_ID}
+              />
+            ) : (
+              <Button isLoading={isLoggingIn} onClick={() => mbLogin()}>
+                Connect wallet
+              </Button>
+            )}
+          </PreMintProvider>
+
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: "column", sm: "row" }}

@@ -1,6 +1,6 @@
 import { bsc, bscTestnet } from "wagmi/chains";
 
-export const IS_TEST_ENV = true;
+export const IS_TEST_ENV = false;
 export const DEFAULT_CHAIN = IS_TEST_ENV ? bscTestnet : bsc;
 
 export const CASHIER_CONTRACT_ADDRESS = IS_TEST_ENV
@@ -8,4 +8,7 @@ export const CASHIER_CONTRACT_ADDRESS = IS_TEST_ENV
   : "0xe37dd9dd04b7302132e6ac1486fa39f9c65535d8";
 
 export const LIT_PKP_PUBKEY =
-  "0x04bb329688a4a6e6865667187890ef2aec083d7c856f6b1d0ff66652a61794975056ff7b9bde2bdf592c3a2a8556aa5a8050732bc9fcdae3065be84ce1bdc03b26";
+  "0x049eb115c0a128724dfe746660eb6ea8b069b3b23b4ae38477ced7fca2bc543d0d6a2174d1e7b8b96a5cbecfd28fc06a565f283450e4e7ad6488bef7fa35f9e9b9";
+
+export const TURTLE_NFT_PROFILE_ID = 578;
+export const TURTLE_NFT_ESSENCE_ID = 1;

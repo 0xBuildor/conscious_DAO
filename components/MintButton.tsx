@@ -1,35 +1,34 @@
 import useMintPaidGatedNFT, {
   ProcessingStage,
 } from "@/models/cyberConnect/useMintPaidGatedNFT";
-import { EligibilityCondition } from "@/types";
+import { IPreMintContext, preMintContext } from "@/store/PreMint";
 import { Button } from "@chakra-ui/react";
+import { useContext } from "react";
 import { Address } from "wagmi";
 
-export const MintButton = (
-  recipient: Address,
-  profileId: number,
-  essenceId: number,
-  eligibilityConditions: EligibilityCondition[]
-) => {
-  const {
-    mint,
-    currentProcess: mintingProcess,
-    isEligible,
-  } = useMintPaidGatedNFT({
+export const MintButton = ({
+  recipient,
+  profileId,
+  essenceId,
+}: {
+  recipient: Address;
+  profileId: number;
+  essenceId: number;
+}) => {
+  const { mint, currentProcess: mintingProcess } = useMintPaidGatedNFT({
     recipient,
-    eligibilityConditions,
   });
-  const canMint = recipient && isEligible;
+  const { isEligible } = useContext(preMintContext) as IPreMintContext;
 
-  const onMintButtonClick = () => {
-    mint(profileId, essenceId);
+  const onMintButtonClick = async () => {
+    isEligible && mint(profileId, essenceId);
   };
 
   return (
     <Button
       onClick={onMintButtonClick}
-      isDisabled={!canMint}
-      isLoading={mintingProcess.includes(ProcessingStage.CHECKING_ELIGIBILITY)}
+      isDisabled={!isEligible}
+      isLoading={mintingProcess.includes(ProcessingStage.MINTING)}
     >
       Mint
     </Button>

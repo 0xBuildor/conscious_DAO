@@ -1,49 +1,26 @@
-import { EligibilityCondition } from "@/types";
+import { IPreMintContext, preMintContext } from "@/store/PreMint";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Flex, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 
-export const Eligibility = ({
-  conditions,
-  prover,
-}: {
-  conditions: EligibilityCondition[];
-  prover: any;
-}) => {
-  const [eligibileConditions, setEligibileConditions] = useState<
-    EligibilityCondition[]
-  >([]);
+export const Eligibility = () => {
+  const { eligibilityConditions, eligibleConditions } = useContext(
+    preMintContext
+  ) as IPreMintContext;
 
-  useEffect(() => {
-    conditions && checkEligibility(conditions);
-  }, [conditions]);
-
-  const checkEligibility = (conditions: EligibilityCondition[]) =>
-    conditions.map((condition) =>
-      condition
-        .condition(prover)
-        .then(
-          (isEligible) => (
-            isEligible &&
-              setEligibileConditions([...eligibileConditions, condition]),
-            isEligible
-          )
-        )
-    );
-
-  return (
-    conditions && (
-      <Flex direction={"column"} gap="small">
-        {conditions.map((condition) => (
-          <Flex gap=".5rem" alignItems={"center"}>
-            <CheckCircleIcon
-              color={eligibileConditions.includes(condition) ? "green" : "grey"}
-            />
-            <Text fontWeight={"semibold"}>{condition.label}</Text>
-          </Flex>
-        ))}
-      </Flex>
-    )
+  return eligibilityConditions ? (
+    <Flex direction={"column"} gap="small">
+      {eligibilityConditions.map((condition) => (
+        <Flex gap=".5rem" alignItems={"center"}>
+          <CheckCircleIcon
+            color={eligibleConditions?.includes(condition) ? "green" : "grey"}
+          />
+          <Text fontWeight={"semibold"}>{condition.label}</Text>
+        </Flex>
+      ))}
+    </Flex>
+  ) : (
+    <></>
   );
 };
 

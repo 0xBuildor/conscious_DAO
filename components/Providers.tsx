@@ -1,3 +1,4 @@
+import LoginProvider from "@/store/Login";
 import { ApolloProvider } from "@apollo/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
@@ -33,7 +34,9 @@ export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
     <ApolloProvider client={apolloClient}>
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains}>
-          <ChakraProvider>{children}</ChakraProvider>
+          <ChakraProvider>
+            <LoginProvider>{children}</LoginProvider>
+          </ChakraProvider>
         </RainbowKitProvider>
       </WagmiConfig>
     </ApolloProvider>
